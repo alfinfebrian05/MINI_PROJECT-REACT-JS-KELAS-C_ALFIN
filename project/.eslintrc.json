@@ -1,0 +1,40 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["plugin:react/recommended", "airbnb"],
+  "overrides": [],
+  "parserOptions": {
+    "parser": "@babel/eslint-parser",
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": ["react"],
+  "rules": {
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx"]
+      }
+    ],
+    "comma-dangle": ["error", "never"],
+    "react/jsx-one-expression-per-line": "off",
+    "import/no-extraneous-dependencies": "off",
+    "react/jsx-wrap-multilines": 0,
+    "react/jsx-boolean-value": 0,
+    "linebreak-style": 0,
+    "react/function-component-definition": 0,
+    "import/prefer-default-export": "off",
+    "object-curly-newline": ["error", { "multiline": true }],
+    "no-unused-vars": "off",
+    "camelcase": 0,
+    "operator-linebreak": 0,
+    "no-console": ["error", { "allow": ["log", "error", "warn"] }],
+    "react/require-default-props": 0,
+    "no-useless-escape": "warn",
+    "react/jsx-no-useless-fragment": "warn",
+    "implicit-arrow-linebreak": "off"
+  },
+  "ignorePatterns": ["tailwind.config.js"]
+}
