@@ -35,14 +35,14 @@ function DetailListing() {
     return result;
   }
 
-  const openWhatsapp = (no_handphone, email) => {
+  function openWhatsapp(no_handphone, email) {
     const formattedPhoneNumber = no_handphone.replace(/^0/, '62');
     window.open(
       `https://api.whatsapp.com/send?phone=${formattedPhoneNumber}${encodeURI(
         `&text=Hai 👋 ${email}! Saya Tertarik dengan listing Anda`
       )}`
     );
-  };
+  }
 
   getListingByUuid(id);
 
@@ -86,11 +86,8 @@ function DetailListing() {
                       <Button
                         onClick={() => {
                           openWhatsapp(
-                            data?.user_account.phone_number.replace(
-                              /^0/,
-                              '+62'
-                            ),
-                            data?.user_account.user.email
+                            data?.user_account.phone_number,
+                            data?.user_account.email
                           );
                         }}
                         color="success"
@@ -168,13 +165,9 @@ function DetailListing() {
                           type="button"
                           className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-md flex items-center justify-center gap-3 px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                           onClick={() => {
-                            window.open(
-                              `https://api.whatsapp.com/send?phone=${data?.user_account.phone_number.replace(
-                                /^0/,
-                                '62'
-                              )}${encodeURI(
-                                `&text=Hai 👋 ${data?.user_account.email}! Saya Tertarik dengan listing Anda`
-                              )}`
+                            openWhatsapp(
+                              data?.user_account.phone_number,
+                              data?.user_account.email
                             );
                           }}
                         >
