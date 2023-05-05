@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import { Button, Dropdown } from 'flowbite-react';
+import { BuildingFill, PeopleFill, BoxArrowRight } from 'react-bootstrap-icons';
+import { Link, useNavigate } from 'react-router-dom';
 
 function NavbarComponent() {
   const userData = JSON.parse(localStorage.getItem('dataUser')) || false;
+  const navigate = useNavigate();
   const [showMiniNavbar, setShowMiniNavbar] = useState(false);
   const [showDropDownMobile, setShowDropDownMobile] = useState(false);
   return (
@@ -16,26 +20,65 @@ function NavbarComponent() {
             />
           </a>
           <div className="flex items-center justify-between md:order-2">
-            <button
-              id="avatarButton"
-              type="button"
-              data-dropdown-toggle="userDropdown"
-              data-dropdown-placement="bottom-end"
-              className="h-10 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center mr-2 mb-2 mt-2 md:mt-0 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800 w-fit"
-              alt="User dropdown"
-              onClick={() => setShowMiniNavbar(!showMiniNavbar)}
-            >
-              {userData.loggedIn ? (
-                <div>
-                  <i className="fa-solid fa-circle-user mr-2" />
-                  {userData.email.replace(/[\d]+@([\w-]+\.)+[\w-]{0,32}$/g, '')}
+            <Dropdown
+              label={
+                <div className="flex items-center">
+                  Akun <i className="fa-solid fa-circle-user ml-2" />
                 </div>
+              }
+            >
+              <Dropdown.Header>
+                {userData.loggedIn ? (
+                  <>
+                    <span className="block text-sm mb-1">Hi 👋 Welcome</span>
+                    <span className="block truncate text-sm font-medium">
+                      {userData.email}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    Akun <i className="fa-solid fa-circle-user ml-2" />
+                  </>
+                )}
+              </Dropdown.Header>
+              {userData.loggedIn ? (
+                <>
+                  <Dropdown.Item icon={BuildingFill}>
+                    <Link to="/dashboard">Manage Listing</Link>
+                  </Dropdown.Item>
+                  <Dropdown.Item icon={PeopleFill}>
+                    <Link to="/owner">Manage Owner</Link>
+                  </Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item icon={BoxArrowRight}>
+                    <Link to="/logout" className="flex gap-2 items-center">
+                      Logout
+                    </Link>
+                  </Dropdown.Item>
+                </>
               ) : (
                 <>
-                  Akun <i className="fa-solid fa-circle-user ml-2" />
+                  <Dropdown.Item>
+                    <Button
+                      fullSized
+                      color="success"
+                      onClick={() => navigate('/register')}
+                    >
+                      Titip Jual / Sewa
+                    </Button>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <Button
+                      fullSized
+                      color="warning"
+                      onClick={() => navigate('/login')}
+                    >
+                      Login / Register
+                    </Button>
+                  </Dropdown.Item>
                 </>
               )}
-            </button>
+            </Dropdown>
             <button
               data-collapse-toggle="navbar-sticky"
               type="button"
@@ -81,6 +124,12 @@ function NavbarComponent() {
                       href="/dashboard"
                     >
                       Manage Listings
+                    </a>
+                    <a
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-blue"
+                      href="/owner"
+                    >
+                      Manage Owner
                     </a>
                     <a
                       className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
@@ -141,7 +190,7 @@ function NavbarComponent() {
               </li>
               <li>
                 <a
-                  href="/"
+                  href="/dijual"
                   className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   Dijual
@@ -149,7 +198,7 @@ function NavbarComponent() {
               </li>
               <li>
                 <a
-                  href="/"
+                  href="/disewakan"
                   className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   Disewakan

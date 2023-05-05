@@ -1,19 +1,30 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { gql, useSubscription, useMutation } from '@apollo/client';
-import { Modal, Button, TextInput } from 'flowbite-react';
 import { v4 as uuid_v4 } from 'uuid';
-import { InputText } from '../components/atoms';
+import { useDispatch } from 'react-redux';
+import { InputText, LoadingData } from '../components/atoms';
 import { NavbarComponent, TableProduct } from '../components/organism';
+import {
+  useIsEditSelector,
+  useOwnerNameSelector,
+  useShowFormSelector
+} from '../config/redux/ownerProperty/ownerPropertySelector';
+import { ownerPropertyAction } from '../config/redux/ownerProperty/ownerPropertySlice';
+import DashboardCard from '../components/organism/DashboardCard/DashboardCard.organism';
 
 function OwnerListPage() {
   const { userID } = JSON.parse(localStorage.getItem('dataUser')) || 0;
-  const [ownerUUID, setOwnerUUID] = useState('');
-  const [isEdit, setIsEdit] = useState(false);
-  const [showForm, setShowForm] = useState(false);
+  const isEdit = useIsEditSelector();
+  const ownerName = useOwnerNameSelector();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const showForm = useShowFormSelector();
 
-  const handleShowForm = () => setShowForm(!showForm);
+  const handleShowForm = () =>
+    dispatch(ownerPropertyAction.setShowForm(!showForm));
 
   const ADD_OWNER_MUTATION = gql`
     mutation ADD_OWNER_MUTATION(
@@ -37,21 +48,8 @@ function OwnerListPage() {
     }
   `;
 
-  const GET_OWNER_SUBSCRIPTION = gql`
-    subscription GET_OWNER($_eq: Int!) {
-      owner_property(where: { user_account: { id: { _eq: $_eq } } }) {
-        id
-        alamat_tinggal
-        nama_owner
-        nomor_handphone
-        owner_id
-        user_id
-      }
-    }
-  `;
-
   const DELETE_OWNER_MUTATION = gql`
-    mutation DELETE_OWNER_PROPERTY($_eq: uuid!) {
+    mutation DELETE_OWNER_PROPERTY($_eq: String!) {
       delete_owner_property(where: { owner_id: { _eq: $_eq } }) {
         affected_rows
         returning {
@@ -85,6 +83,37 @@ function OwnerListPage() {
     }
   `;
 
+  const GET_OWNER_SUBSCRIPTION = gql`
+    subscription GET_OWNER($_eq: Int!, $_ilike: String!) {
+      owner_property(
+        where: {
+          user_account: { id: { _eq: $_eq } }
+          nama_owner: { _ilike: $_ilike }
+        }
+      ) {
+        id
+        alamat_tinggal
+        nama_owner
+        nomor_handphone
+        owner_id
+        user_id
+      }
+    }
+  `;
+
+  const {
+    loading: loadingOwnerSubscription,
+    error: errorOwnerSubscription,
+    data: dataOwnerSubscription
+  } = useSubscription(GET_OWNER_SUBSCRIPTION, {
+    variables: {
+      _eq: userID,
+      _ilike: `%${ownerName}%`
+    }
+  });
+
+  const totalOwnerProperty = dataOwnerSubscription?.owner_property.length || 0;
+
   const [
     AddOwnerMutation,
     {
@@ -111,12 +140,6 @@ function OwnerListPage() {
       data: dataUpdateOwnerMutation
     }
   ] = useMutation(UPDATE_OWNER_MUTATION);
-
-  const {
-    loading: loadingOwnerSubscription,
-    error: errorOwnerSubscription,
-    data: dataOwnerSubscription
-  } = useSubscription(GET_OWNER_SUBSCRIPTION, { variables: { _eq: userID } });
 
   const formik = useFormik({
     initialValues: {
@@ -156,8 +179,14 @@ function OwnerListPage() {
       nomorHp: dataOwner.nomor_handphone,
       ownerUuid: dataOwner.owner_id
     });
-    setIsEdit(!isEdit);
+    dispatch(ownerPropertyAction.setIsEdit(true));
     handleShowForm();
+  };
+
+  const handleChangeEditStatus = () => {
+    formik.resetForm();
+    dispatch(ownerPropertyAction.setIsEdit(false));
+    dispatch(ownerPropertyAction.setShowForm(!showForm));
   };
 
   const handleUpdateOwner = (newDataOwner, event) => {
@@ -172,7 +201,14 @@ function OwnerListPage() {
         user_id: newDataOwner.userId
       }
     });
+    dispatch(ownerPropertyAction.setIsEdit(false));
+    dispatch(ownerPropertyAction.setShowForm(false));
     formik.resetForm();
+  };
+
+  const handleSearchOwner = (event) => {
+    const { value } = event.target;
+    dispatch(ownerPropertyAction.setOwnerName(value));
   };
 
   return (
@@ -197,26 +233,58 @@ function OwnerListPage() {
             Owner Property List&#39;s
           </h1>
         </div>
-        {/* #ADD NEW LISTING CARD region  */}
-        <div className="max-w py-8 lg:px-16 md:py-10 md:px-10 bg-gray-100 rounded-xl mb-6 flex-col md:flex-row flex justify-center md:justify-between items-center">
-          <div className="text-center md:text-start">
-            <h5 className="mb-4 md:mb-6 text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
-              Add New Owner
-            </h5>
-            <p className="mb-6 md:mb-0 font-normal text-md xl:text-md md:text-lg text-gray-700 dark:text-gray-400 w-[24rem] px-10 md:px-0">
-              Ingin menambahkan owner property baru? <br /> &#34; Klik Add New
-              Owner &#34; Untuk Menambahkan.
-            </p>
-          </div>
-          <Button onClick={() => handleShowForm()} className="pl-3 py-1">
-            <p className="text-2xl mr-2">Add New Owner</p>
-            <img
-              src="./assets/icons/dashboard/material-symbols_man.svg"
-              alt="material-symbols_man.svg"
-              className="md:w-10 w-8"
+        {/* #ADD NEW OWNER CARD region  */}
+        {totalOwnerProperty >= 1 ? (
+          <>
+            <DashboardCard
+              cardTitle="Add New Listing Property"
+              cardDescription="Anda dapat menambahkan listing baru. Silahkan kembali ke dashboard untuk memulai menambahkan listing"
+              cardButtonOnclick={() => navigate('/dashboard')}
+              cardButtonContent={
+                <>
+                  <img
+                    src="./assets/icons/dashboard/material-symbols_man.svg"
+                    alt="material-symbols_man"
+                    className="mr-2 lg:mr-2.5 w-8 lg:w-10"
+                  />
+                  <p className="text-2xl lg:text-3xl">Kembali ke dashboard</p>
+                </>
+              }
             />
-          </Button>
-        </div>
+            <DashboardCard
+              cardTitle="Owner Property"
+              cardDescription={`Anda telah menambahkan Owner Property (${totalOwnerProperty}). Jika ingin menambahkan owner lagi silahkan klik tombol "Add New Owner" `}
+              cardButtonOnclick={() => handleShowForm()}
+              cardButtonContent={
+                <>
+                  <img
+                    src="./assets/icons/dashboard/material-symbols_man.svg"
+                    alt="material-symbols_man"
+                    className="mr-2 lg:mr-2.5 w-8 lg:w-10"
+                  />
+                  <p className="text-2xl lg:text-3xl">Add New Owner</p>
+                </>
+              }
+            />
+          </>
+        ) : (
+          <DashboardCard
+            cardTitle="Owner Property"
+            cardDescription="Data Owner Property belum ada. Silahkan menambahkan owner property terlebih dahulu jika ingin mulai menambahkan listing"
+            cardButtonOnclick={() => handleShowForm()}
+            cardButtonContent={
+              <>
+                <img
+                  src="./assets/icons/dashboard/material-symbols_man.svg"
+                  alt="material-symbols_man"
+                  className="mr-2 lg:mr-2.5 w-8 lg:w-10"
+                />
+                <p className="text-2xl lg:text-3xl">Add New Owner</p>
+              </>
+            }
+          />
+        )}
+        {/* #ADD NEW LISTING CARD endregion  */}
         <div
           className={`${
             showForm ? 'block' : 'hidden'
@@ -287,7 +355,7 @@ function OwnerListPage() {
               </button>
               <button
                 type="button"
-                onClick={isEdit ? handleEditStatus : handleShowForm}
+                onClick={isEdit ? handleChangeEditStatus : handleShowForm}
                 className="w-full md:w-fit text-red-600 hover:text-white border border-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-normal rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
               >
                 {isEdit ? 'Close Edit Owner' : 'Close Form'}
@@ -297,48 +365,60 @@ function OwnerListPage() {
         </div>
         {/* #ADD NEW LISTING CARD endregion  */}
         <TableProduct
-          thead_arr={[
-            'Nama Owner',
-            'Owner ID',
-            'Alamat Tinggal',
-            'Nomor Handphone',
-            'Action'
-          ]}
+          thead_arr={
+            dataOwnerSubscription?.owner_property.length < 1
+              ? null
+              : [
+                  'Nama Owner',
+                  'Owner ID',
+                  'Alamat Tinggal',
+                  'Nomor Handphone',
+                  'Action'
+                ]
+          }
+          searchChange={handleSearchOwner}
+          searchValue={ownerName}
+          searchPlaceholder="Cari owner berdasarkan nama"
           tbody_content={
             <>
-              {loadingOwnerSubscription && (
+              {loadingOwnerSubscription ? (
                 <tr>
-                  <td className="text-center px-6 py-3 bg-gray-100 z-50 absolute w-full text-md flex flex-row items-center justify-center gap-3">
-                    Loading Owner...
-                    <div role="status">
-                      <svg
-                        aria-hidden="true"
-                        className="w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                        viewBox="0 0 100 101"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                          fill="currentColor"
-                        />
-                        <path
-                          d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                          fill="currentFill"
-                        />
-                      </svg>
-                      <span className="sr-only">Loading...</span>
-                    </div>
+                  <td className="px-6 py-4">
+                    <LoadingData />
+                  </td>
+                  <td className="px-6 py-4">
+                    <LoadingData />
+                  </td>
+                  <td className="px-6 py-4">
+                    <LoadingData />
+                  </td>
+                  <td className="px-6 py-4">
+                    <LoadingData />
+                  </td>
+                  <td className="px-6 py-4">
+                    <LoadingData />
                   </td>
                 </tr>
-              )}
-              {errorOwnerSubscription && (
+              ) : null}
+              {errorOwnerSubscription ? (
                 <tr>
-                  <td className="text-center px-6 py-3 bg-gray-100 z-50 absolute w-full">
-                    Loading Owner Error
+                  <td className="px-6 py-4 bg-red-500 text-white">
+                    Error Loading Data
+                  </td>
+                  <td className="px-6 py-4 bg-red-500 text-white">
+                    Error Loading Data
+                  </td>
+                  <td className="px-6 py-4 bg-red-500 text-white">
+                    Error Loading Data
+                  </td>
+                  <td className="px-6 py-4 bg-red-500 text-white">
+                    Error Loading Data
+                  </td>
+                  <td className="px-6 py-4 bg-red-500 text-white">
+                    Error Loading Data
                   </td>
                 </tr>
-              )}
+              ) : null}
               {dataOwnerSubscription?.owner_property.map((data) => (
                 <tr
                   key={parseInt(data.id, 10)}
@@ -352,14 +432,14 @@ function OwnerListPage() {
                     <button
                       type="button"
                       onClick={() => handleEditStatus(data)}
-                      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-normal rounded-lg text-sm px-6 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 flex items-center justify-between"
+                      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-normal rounded-lg text-sm px-6 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 flex items-center justify-center gap-4"
                     >
                       <i className="fa-solid fa-pen-to-square" />
                       Edit Data
                     </button>
                     <button
                       type="button"
-                      className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-normal rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800 flex items-center justify-between"
+                      className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-normal rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800 flex items-center justify-between w-max gap-4"
                       onClick={() => handleDeleteOwner(data.owner_id)}
                     >
                       <img

@@ -11,7 +11,10 @@ import {
   Register,
   Login,
   AgentDashboard,
-  OwnerListPage
+  OwnerListPage,
+  DijualPage,
+  DisewakanPage,
+  DetailListing
 } from '../pages';
 
 function PrivateRouter(props) {
@@ -44,6 +47,9 @@ function RootRouter() {
     <Router>
       <Routes>
         <Route exact path="/" element={<HomePage />} />
+        <Route exact path="/dijual" element={<DijualPage />} />
+        <Route exact path="/disewakan" element={<DisewakanPage />} />
+        <Route exact path="/:id" element={<DetailListing />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<LogOut />} />

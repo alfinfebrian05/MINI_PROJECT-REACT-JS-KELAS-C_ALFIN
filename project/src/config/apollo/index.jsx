@@ -1,5 +1,3 @@
-/* eslint-disable operator-linebreak */
-/* eslint-disable comma-dangle */
 import * as client from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
@@ -11,9 +9,9 @@ const wsLink = new GraphQLWsLink(
     connectionParams: {
       headers: {
         'x-hasura-admin-secret':
-          'OoWhqvdrdDnVGQDvvi7G1ummRjlqgG04A8anFEcEF4WbY6YsNK7QYRuvW6PLheWP',
-      },
-    },
+          'OoWhqvdrdDnVGQDvvi7G1ummRjlqgG04A8anFEcEF4WbY6YsNK7QYRuvW6PLheWP'
+      }
+    }
   })
 );
 
@@ -22,7 +20,8 @@ const httpLink = new client.HttpLink({
   headers: {
     'x-hasura-admin-secret':
       'OoWhqvdrdDnVGQDvvi7G1ummRjlqgG04A8anFEcEF4WbY6YsNK7QYRuvW6PLheWP',
-  },
+    'content-type': 'multipart/form-data'
+  }
 });
 
 const splitLink = client.split(
@@ -39,7 +38,7 @@ const splitLink = client.split(
 
 const clientApollo = new client.ApolloClient({
   link: splitLink,
-  cache: new client.InMemoryCache(),
+  cache: new client.InMemoryCache()
 });
 
 export default clientApollo;

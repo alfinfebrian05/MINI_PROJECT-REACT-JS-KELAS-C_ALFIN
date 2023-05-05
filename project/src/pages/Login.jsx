@@ -56,8 +56,6 @@ function Login() {
 
   const user_id = dataLoginUser?.user_accounts.map((user) => user.id);
 
-  console.log({ retr_email, retr_password });
-
   const userData = {
     email: retr_email,
     password: retr_password,

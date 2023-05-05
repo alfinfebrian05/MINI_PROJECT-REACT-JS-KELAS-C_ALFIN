@@ -1,0 +1,11 @@
+{
+  "editor.accessibilityPageSize": 10,
+  "editor.autoIndent": "none",
+  "editor.wordWrapColumn": 3000,
+  "editor.wordWrap": "wordWrapColumn",
+  "diffEditor.wordWrap": "off",
+  "debug.console.wordWrap": true,
+  "editor.wrappingIndent": "none",
+  "prettier.proseWrap": "never",
+  "html.format.wrapLineLength": 300
+}

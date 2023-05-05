@@ -34,7 +34,11 @@
     "react/require-default-props": 0,
     "no-useless-escape": "warn",
     "react/jsx-no-useless-fragment": "warn",
-    "implicit-arrow-linebreak": "off"
+    "implicit-arrow-linebreak": "off",
+    "arrow-body-style": "off",
+    "function-paren-newline": "off",
+    "react/jsx-indent": 1,
+    "indent": 1
   },
   "ignorePatterns": ["tailwind.config.js"]
 }

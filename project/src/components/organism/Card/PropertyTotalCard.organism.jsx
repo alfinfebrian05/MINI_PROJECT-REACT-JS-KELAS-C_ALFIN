@@ -19,7 +19,11 @@ function PropertyTotalCard({ cardTitle, cardLabelContent }) {
 }
 
 PropertyTotalCard.propTypes = {
-  cardTitle: PropTypes.string.isRequired,
+  cardTitle: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+    PropTypes.element
+  ]).isRequired,
   cardLabelContent: PropTypes.node.isRequired
 };
 
