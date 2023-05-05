@@ -1,17 +1,15 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Card } from 'flowbite-react';
 import { CardListing, NavbarComponent } from '../components/organism';
 import {
   useDataIsLoading,
   useListingCategoryFiltered
 } from '../config/redux/listingData/listingDataSelector';
-import getListingByCategory from '../data/listingSubscription';
+import { getListingByCategory } from '../data';
 import { LoadingData } from '../components/atoms';
 
 function DijualPage() {
   const location = useLocation();
-  const query = new URLSearchParams(location.search);
   const pageName = location.pathname.replace('/', '');
   const listingDatas = useListingCategoryFiltered();
   const isLoading = useDataIsLoading();
@@ -40,6 +38,7 @@ function DijualPage() {
   });
 
   const category = capitalizeString(pageName);
+
   getListingByCategory(category);
 
   return (

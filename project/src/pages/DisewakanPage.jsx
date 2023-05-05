@@ -5,7 +5,7 @@ import {
   useDataIsLoading,
   useListingCategoryFiltered
 } from '../config/redux/listingData/listingDataSelector';
-import getListingByCategory from '../data/listingSubscription';
+import { getListingByCategory } from '../data';
 import { LoadingData } from '../components/atoms';
 
 function DisewakanPage() {

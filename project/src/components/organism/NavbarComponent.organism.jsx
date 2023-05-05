@@ -14,7 +14,7 @@ function NavbarComponent() {
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <a href="/" className="flex items-center">
             <img
-              src="./assets/logo/logo-web.png"
+              src="../assets/logo/logo-web.png"
               className="h-14 lg:h-20 xl:h-24 mr-3"
               alt="Flowbite Logo"
             />

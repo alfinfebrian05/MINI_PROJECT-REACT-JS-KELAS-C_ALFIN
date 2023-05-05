@@ -6,3 +6,4 @@ export { default as Register } from './Register';
 export { default as Login } from './Login';
 export { default as AgentDashboard } from './AgentDashboard';
 export { default as DetailListing } from './DetailListing';
+export { default as ListingByType } from './ListingByType';

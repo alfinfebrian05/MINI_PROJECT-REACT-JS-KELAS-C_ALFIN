@@ -15,8 +15,7 @@ import { NavbarComponent } from '../components/organism';
 import {
   useLimitListingData,
   useNewListingPrimaryOnlyData,
-  useNewListingSecondaryOnlyData,
-  useSelectedListingCategory
+  useNewListingSecondaryOnlyData
 } from '../config/redux/listingData/listingDataSelector';
 import { listingDataAction } from '../config/redux/listingData/listingDataSlice';
 import { LoadingData } from '../components/atoms';
@@ -130,101 +129,25 @@ function HomePage() {
       <NavbarComponent />
       <div className="mt-[5.6rem] lg:mt-28 xl:mt-40 px-0 lg:px-18 xl:px-36">
         {/* Banner STARTREGION */}
-        <div className="relative">
-          <div className="h-36 md:h-72 lg:h-[400px] xl:h-80 2xl:h-[430px] shadow-lg relative">
-            <Carousel slide={true} slideInterval={4000} indicators={true}>
-              <div className="rounded-none">
-                <img
-                  src="../assets/banner/Banner-Website_01.png"
-                  alt="banner-web-1"
-                />
-              </div>
-              <div className="rounded-none">
-                <img
-                  src="../assets/banner/Banner-Website_02.png"
-                  alt="banner-web-1"
-                />
-              </div>
-            </Carousel>
-          </div>
-          <div className="absolute z-10 left-0 right-0 top-[9rem] md:top-[8.5rem] lg:top-[48%] px-5">
-            <form>
-              <div className="grid md:flex md:justify-center md:gap-2 gap-3">
-                <Select className="hidden lg:block">
-                  <option>Dijual</option>
-                  <option>Disewakan</option>
-                </Select>
-                <TextInput
-                  rightIcon={Search}
-                  placeholder="Cari berdasarkan alamat"
-                  className="w-full md:w-72 lg:w-[21rem]"
-                />
-                <Button>CARI</Button>
-              </div>
-              <div className="grid md:flex md:justify-center md:gap-2 mt-3 gap-3">
-                <Select className="hidden lg:block">
-                  <option value="" selected>
-                    Harga Min
-                  </option>
-                  <option value="50000000">Rp. 50 Juta</option>
-                  <option value="100000000">Rp. 100 Juta</option>
-                  <option value="200000000">Rp. 200 Juta</option>
-                  <option value="300000000">Rp. 300 Juta</option>
-                  <option value="400000000">Rp. 400 Juta</option>
-                  <option value="500000000">Rp. 500 Juta</option>
-                  <option value="600000000">Rp. 600 Juta</option>
-                  <option value="700000000">Rp. 700 Juta</option>
-                  <option value="800000000">Rp. 800 Juta</option>
-                  <option value="900000000">Rp. 900 Juta</option>
-                  <option value="1000000000">Rp. 1 Milliar</option>
-                </Select>
-                <Select className="hidden lg:block">
-                  <option value="" selected>
-                    Harga Max
-                  </option>
-                  <option value="50000000">Rp. 50 Juta</option>
-                  <option value="100000000">Rp. 100 Juta</option>
-                  <option value="200000000">Rp. 200 Juta</option>
-                  <option value="300000000">Rp. 300 Juta</option>
-                  <option value="400000000">Rp. 400 Juta</option>
-                  <option value="500000000">Rp. 500 Juta</option>
-                  <option value="600000000">Rp. 600 Juta</option>
-                  <option value="700000000">Rp. 700 Juta</option>
-                  <option value="800000000">Rp. 800 Juta</option>
-                  <option value="900000000">Rp. 900 Juta</option>
-                  <option value="1000000000">Rp. 1 Milliar</option>
-                </Select>
-                <Select className="hidden lg:block">
-                  <option value="" selected>
-                    Kamar Tidur
-                  </option>
-                  <option value="0">0 KT</option>
-                  <option value="1">1 KT</option>
-                  <option value="2">2 KT</option>
-                  <option value="3">3 KT</option>
-                  <option value="4">4 KT</option>
-                  <option value="5">5 KT</option>
-                  <option value="> 5">&gt; 5 KT</option>
-                </Select>
-                <Select className="hidden lg:block">
-                  <option value="" selected>
-                    Kamar Mandi
-                  </option>
-                  <option value="0">0 KT</option>
-                  <option value="1">1 KT</option>
-                  <option value="2">2 KT</option>
-                  <option value="3">3 KT</option>
-                  <option value="4">4 KT</option>
-                  <option value="5">5 KT</option>
-                  <option value="> 5">&gt; 5 KT</option>
-                </Select>
-              </div>
-            </form>
-          </div>
+        <div className="h-36 md:h-72 lg:h-[400px] xl:h-80 2xl:h-[430px] shadow-lg relative">
+          <Carousel slide={true} slideInterval={4000} indicators={true}>
+            <div className="rounded-none">
+              <img
+                src="../assets/banner/Banner-Website_01.png"
+                alt="banner-web-1"
+              />
+            </div>
+            <div className="rounded-none">
+              <img
+                src="../assets/banner/Banner-Website_02.png"
+                alt="banner-web-1"
+              />
+            </div>
+          </Carousel>
         </div>
         {/* Banner ENDREGION */}
         {/* //#TITLE NEW PROPERTY ONLY SECTION  */}
-        <div className="flex flex-col md:flex-row justify-between mt-32 md:mt-10 px-6 xl:px-0 lg:my-10">
+        <div className="flex flex-col md:flex-row justify-between mt-7 md:mt-10 px-6 xl:px-0 lg:my-10">
           <div className="flex items-center w-fit mb-3 lg:mb-0 flex-row-reverse gap-x-3 lg:items-center lg:gap-x-4">
             <h3 className="lg:text-2xl text-2xl font-semibold">
               Properti Baru Untuk Anda
@@ -237,7 +160,7 @@ function HomePage() {
           </div>
           <button
             type="button"
-            onClick={() => navigate('/dijual?listing_type=Primary')}
+            onClick={() => navigate('/dijual/primary')}
             className="text-blue-700 hidden md:flex mr-0 my-auto items-center gap-3 h-fit hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
           >
             See More <ArrowRight className="text-lg" />
@@ -310,6 +233,7 @@ function HomePage() {
           )}
           <button
             type="button"
+            onClick={() => navigate('/dijual/primary')}
             className="text-blue-700 flex justify-center md:hidden mr-0 mt-1.5 my-auto items-center gap-5 h-fit hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
           >
             See More <ArrowRight className="text-lg" />
@@ -330,7 +254,7 @@ function HomePage() {
           </div>
           <button
             type="button"
-            onClick={() => navigate('/dijual?listing_type=Secondary')}
+            onClick={() => navigate('/dijual/secondary')}
             className="text-blue-700 hidden md:flex mr-0 my-auto items-center gap-3 h-fit hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
           >
             See More <ArrowRight className="text-lg" />
@@ -410,6 +334,7 @@ function HomePage() {
           )}
           <button
             type="button"
+            onClick={() => navigate('/dijual/secondary')}
             className="text-blue-700 flex justify-center md:hidden mr-0 mt-1.5 my-auto items-center gap-5 h-fit hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
           >
             See More <ArrowRight className="text-lg" />

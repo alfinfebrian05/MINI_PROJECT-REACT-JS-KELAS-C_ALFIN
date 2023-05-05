@@ -18,8 +18,8 @@ const getListingByCategory = (listing_category) => {
   const listingCategory = useSelectedListingCategory();
 
   const FILTER_LISTING_BY_CATEGORY = gql`
-    subscription SUBSCRIPTION_BY_CATEGORY($_eq: String!) {
-      property_listing(where: { kategorilisting: { _eq: $_eq } }) {
+    subscription SUBSCRIPTION_BY_CATEGORY($kategorilisting: String!) {
+      property_listing(where: { kategorilisting: { _eq: $kategorilisting } }) {
         alamatlisting
         gambarlisting
         hargalisting
@@ -37,6 +37,10 @@ const getListingByCategory = (listing_category) => {
         spesifikasilisting
         propertyowner
         tipelisting
+        user_account {
+          phone_number
+          email
+        }
       }
     }
   `;
@@ -44,7 +48,7 @@ const getListingByCategory = (listing_category) => {
   const { loading: loadingFilteredListingByCategory } = useSubscription(
     FILTER_LISTING_BY_CATEGORY,
     {
-      variables: { _eq: listingCategory },
+      variables: { kategorilisting: listingCategory },
       onData: ({ data }) => {
         const dataFetched = data.data?.property_listing;
         dispatch(listingDataAction.setListingCategoryFiltered(dataFetched));

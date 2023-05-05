@@ -11,6 +11,7 @@ import { getListingByUuid } from '../data';
 import { LoadingData } from '../components/atoms';
 
 function DetailListing() {
+  const location = window.location.href;
   const param = useParams();
   const navigate = useNavigate();
   const dataListing = useListingDataByUuid();
@@ -39,7 +40,7 @@ function DetailListing() {
     const formattedPhoneNumber = no_handphone.replace(/^0/, '62');
     window.open(
       `https://api.whatsapp.com/send?phone=${formattedPhoneNumber}${encodeURI(
-        `&text=Hai 👋 ${email}! Saya Tertarik dengan listing Anda`
+        `&text=Hai 👋 ${email}! Saya Tertarik dengan listing Anda (${location})`
       )}`
     );
   }
