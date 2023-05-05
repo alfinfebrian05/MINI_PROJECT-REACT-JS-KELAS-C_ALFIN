@@ -35,6 +35,15 @@ function DetailListing() {
     return result;
   }
 
+  const openWhatsapp = (no_handphone, email) => {
+    const formattedPhoneNumber = no_handphone.replace(/^0/, '62');
+    window.open(
+      `https://api.whatsapp.com/send?phone=${formattedPhoneNumber}${encodeURI(
+        `&text=Hai 👋 ${email}! Saya Tertarik dengan listing Anda`
+      )}`
+    );
+  };
+
   getListingByUuid(id);
 
   return (
@@ -75,13 +84,15 @@ function DetailListing() {
                         {data?.user_account.phone_number.replace(/^0/, '+62')}
                       </Button>
                       <Button
-                        href={`https://api.whatsapp.com/send?phone=${data?.user_account.phone_number.replace(
-                          /^0/,
-                          '62'
-                        )}${encodeURI(
-                          `&text=Hai 👋 ${data?.user_account.email}! Saya Tertarik dengan listing Anda`
-                        )}`}
-                        target="_blank"
+                        onClick={() => {
+                          openWhatsapp(
+                            data?.user_account.phone_number.replace(
+                              /^0/,
+                              '+62'
+                            ),
+                            data?.user_account.user.email
+                          );
+                        }}
                         color="success"
                       >
                         <div className="flex items-center gap-2">
