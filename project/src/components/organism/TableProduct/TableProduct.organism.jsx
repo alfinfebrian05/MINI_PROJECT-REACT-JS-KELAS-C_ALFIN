@@ -14,7 +14,7 @@ function TableProduct({
   return (
     <div
       className={`relative overflow-x-auto rounded-lg mb-16 border ${
-        tbody_content.length < 1 ? null : 'h-[8.3rem] md:h-[6.6rem]'
+        tbody_content.length < 1 ? 'h-[8.3rem] md:h-[6.6rem]' : null
       }`}
     >
       {thead_arr ? (
@@ -68,13 +68,13 @@ function TableProduct({
         </thead>
         <tbody>
           {tbody_content.length < 1 ? (
-            tbody_content
-          ) : (
             <tr>
               <td className="absolute px-6 py-3 w-full text-center text-lg bg-red-500 text-white">
                 Silahkan menambahkan data, anda belum menambahkan data
               </td>
             </tr>
+          ) : (
+            tbody_content
           )}
         </tbody>
       </table>

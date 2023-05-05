@@ -262,6 +262,8 @@ function AgentDashboard() {
     }
   });
 
+  console.log({ listingData });
+
   const {
     data: dataListingSold,
     loading: loadingListingSold,
@@ -967,65 +969,63 @@ function AgentDashboard() {
           searchPlaceholder="Cari listing berdasarkan judul"
           searchChange={handleSearchListing}
           searchValue={searchListingTitle}
-          thead_arr={totalListing === null ? thead_listing_array : null}
+          thead_arr={totalListing < 1 ? null : thead_listing_array}
           tbody_content={
-            loadingDataListingSubscription
-              ? listingData.map((data) => (
-                  <TableRow>
-                    <TableData data={<LoadingData />} />
-                    <TableData data={<LoadingData />} />
-                    <TableData data={<LoadingData />} />
-                    <TableData data={<LoadingData />} />
-                    <TableData data={<LoadingData />} />
-                    <TableData data={<LoadingData />} />
-                    <TableData data={<LoadingData />} />
-                    <TableData data={<LoadingData />} />
-                    <TableData data={<LoadingData />} />
-                    <TableData data={<LoadingData />} />
-                    <TableData data={<LoadingData />} />
-                  </TableRow>
-                ))
-              : listingData.map((data) => (
-                  <TableRow key={data.id}>
-                    <TableData data={data.listingid} />
-                    <TableData data={data.judullisting} />
-                    <TableData data={data.kategorilisting} />
-                    <TableData data={data.tipelisting} />
-                    <TableData data={data.jenislisting} />
-                    <TableData data={data.spesifikasilisting} />
-                    <TableData
-                      data={priceFormatter.format(data.hargalisting)}
-                    />
-                    <TableData data={data.status_listing} />
-                    <TableData data={data.gambarlisting} />
-                    <TableData data={data.propertyowner} />
-                    <TableData
-                      className="flex flex-wrap flex-col gap-y-2"
-                      data={
-                        <>
-                          <button
-                            type="button"
-                            onClick={() => handleEditStatus(data)}
-                            className="focus:outline-none text-black bg-yellow-200 hover:bg-yellow-300 dark:hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-400 w-max"
-                          >
-                            {isEditListing ? 'Edit form opened' : 'Edit'}
-                          </button>
-                          <Button
-                            color="failure"
-                            onClick={() => {
-                              handleDeleteByListingId(
-                                data.listingid,
-                                data.judullisting
-                              );
-                            }}
-                          >
-                            Delete
-                          </Button>
-                        </>
-                      }
-                    />
-                  </TableRow>
-                ))
+            loadingDataListingSubscription ? (
+              <TableRow>
+                <TableData data={<LoadingData />} />
+                <TableData data={<LoadingData />} />
+                <TableData data={<LoadingData />} />
+                <TableData data={<LoadingData />} />
+                <TableData data={<LoadingData />} />
+                <TableData data={<LoadingData />} />
+                <TableData data={<LoadingData />} />
+                <TableData data={<LoadingData />} />
+                <TableData data={<LoadingData />} />
+                <TableData data={<LoadingData />} />
+                <TableData data={<LoadingData />} />
+              </TableRow>
+            ) : (
+              listingData.map((data) => (
+                <TableRow key={data.id}>
+                  <TableData data={data.listingid} />
+                  <TableData data={data.judullisting} />
+                  <TableData data={data.kategorilisting} />
+                  <TableData data={data.tipelisting} />
+                  <TableData data={data.jenislisting} />
+                  <TableData data={data.spesifikasilisting} />
+                  <TableData data={priceFormatter.format(data.hargalisting)} />
+                  <TableData data={data.status_listing} />
+                  <TableData data={data.gambarlisting} />
+                  <TableData data={data.propertyowner} />
+                  <TableData
+                    className="flex flex-wrap flex-col gap-y-2"
+                    data={
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => handleEditStatus(data)}
+                          className="focus:outline-none text-black bg-yellow-200 hover:bg-yellow-300 dark:hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-400 w-max"
+                        >
+                          {isEditListing ? 'Edit form opened' : 'Edit'}
+                        </button>
+                        <Button
+                          color="failure"
+                          onClick={() => {
+                            handleDeleteByListingId(
+                              data.listingid,
+                              data.judullisting
+                            );
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </>
+                    }
+                  />
+                </TableRow>
+              ))
+            )
           }
         />
       </main>
