@@ -6,12 +6,13 @@ import {
   useDataIsLoading,
   useListingCategoryFiltered
 } from '../config/redux/listingData/listingDataSelector';
-import { NavbarComponent } from '../components/organism';
 import { LoadingData } from '../components/atoms';
+import { NavbarComponent } from '../components/organism';
+import { FooterWebsite } from '../components/template';
 
 function ListingByType() {
   const param = useParams();
-  const listingType = param.type;
+  const { category, type } = param;
   const listingDatas = useListingCategoryFiltered();
   const isLoading = useDataIsLoading();
 
@@ -38,7 +39,7 @@ function ListingByType() {
     compactDisplay: 'short'
   });
 
-  getListingByType(listingType);
+  getListingByType(type, category);
 
   return (
     <>
@@ -49,7 +50,7 @@ function ListingByType() {
             <LoadingData />
           ) : (
             listingDatas.map((data) => (
-              <Link to={`/${data.listingid}`}>
+              <Link to={`/${data.listingid}`} key={data.id}>
                 <Card
                   imgSrc={
                     data.jenislisting === 'Primary'
@@ -61,7 +62,7 @@ function ListingByType() {
                 >
                   <div className="flex gap-2 uppercase">
                     <Badge className="w-max text-lg font-bold" color="gray">
-                      {listingType}
+                      {data.tipelisting}
                     </Badge>
                     <Badge className="w-max text-lg font-bold" color="warning">
                       {data.kategorilisting}
@@ -104,6 +105,7 @@ function ListingByType() {
           )}
         </div>
       </div>
+      <FooterWebsite />
     </>
   );
 }

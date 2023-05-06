@@ -7,6 +7,7 @@ import {
 } from '../config/redux/listingData/listingDataSelector';
 import { getListingByCategory } from '../data';
 import { LoadingData } from '../components/atoms';
+import { FooterWebsite } from '../components/template';
 
 function DijualPage() {
   const location = useLocation();
@@ -50,7 +51,7 @@ function DijualPage() {
             <LoadingData />
           ) : (
             listingDatas.map((data) => (
-              <Link to={`/${data.listingid}`}>
+              <Link to={`/${data.listingid}`} key={data.id}>
                 <CardListing
                   listingImage={
                     data.jenislisting === 'Secondary'
@@ -72,6 +73,7 @@ function DijualPage() {
           )}
         </div>
       </div>
+      <FooterWebsite />
     </>
   );
 }

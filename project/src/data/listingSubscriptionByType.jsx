@@ -1,14 +1,25 @@
 import { gql, useSubscription } from '@apollo/client';
 import { useDispatch } from 'react-redux';
 
+import { useEffect } from 'react';
 import { listingDataAction } from '../config/redux/listingData/listingDataSlice';
+import { useDataIsLoading } from '../config/redux/listingData/listingDataSelector';
 
-const getListingByType = (listing_type) => {
+const getListingByFilter = (listing_type, category) => {
   const dispatch = useDispatch();
+  const isLoading = useDataIsLoading();
 
-  const FILTER_LISTING_BY_TYPE = gql`
-    subscription SUBSCRIPTION_BY_CATEGORY($jenislisting: String!) {
-      property_listing(where: { jenislisting: { _ilike: $jenislisting } }) {
+  const SUBSCRIPTION_LISTING_BY_FILTER = gql`
+    subscription SUBSCRIPTION_BY_FILTERS(
+      $jenislisting: String!
+      $kategorilisting: String!
+    ) {
+      property_listing(
+        where: {
+          jenislisting: { _ilike: $jenislisting }
+          kategorilisting: { _ilike: $kategorilisting }
+        }
+      ) {
         alamatlisting
         gambarlisting
         hargalisting
@@ -35,9 +46,12 @@ const getListingByType = (listing_type) => {
   `;
 
   const { loading: loadingFilteredListingByType } = useSubscription(
-    FILTER_LISTING_BY_TYPE,
+    SUBSCRIPTION_LISTING_BY_FILTER,
     {
-      variables: { jenislisting: `%${listing_type}%` },
+      variables: {
+        jenislisting: `%${listing_type}%`,
+        kategorilisting: `%${category}%`
+      },
       onData: ({ data }) => {
         const dataFetched = data.data?.property_listing;
         dispatch(listingDataAction.setListingCategoryFiltered(dataFetched));
@@ -52,4 +66,4 @@ const getListingByType = (listing_type) => {
   }
 };
 
-export default getListingByType;
+export default getListingByFilter;

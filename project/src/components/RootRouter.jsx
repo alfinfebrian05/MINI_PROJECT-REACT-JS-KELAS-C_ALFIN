@@ -51,7 +51,7 @@ function RootRouter() {
         <Route exact path="/dijual" element={<DijualPage />} />
         <Route exact path="/disewakan" element={<DisewakanPage />} />
         <Route exact path="/:id" element={<DetailListing />} />
-        <Route exact path="/dijual/:type" element={<ListingByType />} />
+        <Route exact path="/:category/:type" element={<ListingByType />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<LogOut />} />

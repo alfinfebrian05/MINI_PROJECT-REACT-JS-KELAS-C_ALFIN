@@ -9,6 +9,7 @@ import {
 } from '../config/redux/listingData/listingDataSelector';
 import { getListingByUuid } from '../data';
 import { LoadingData } from '../components/atoms';
+import { FooterWebsite } from '../components/template';
 
 function DetailListing() {
   const location = window.location.href;
@@ -126,19 +127,21 @@ function DetailListing() {
               <div className="flex flex-col mt-6 divide-y gap-y-6 md:w-full xl:w-[42rem] 2xl:w-[50rem]">
                 <div className="flex flex-col gap-5 md:flex-row-reverse md:justify-between xl:flex-row">
                   <div className="block xl:hidden">
-                    <div className="flex justify-between gap-4 items-center border p-5 mb-6 rounded-xl">
+                    <div className="flex flex-col gap-4 border p-5 mb-6 rounded-xl">
                       <p className="flex items-center gap-2">
-                        <TagFill /> Tags
+                        <TagFill /> Listing Tags
                       </p>
-                      <span className="flex h-fit items-center gap-1 font-semibold bg-blue-100 text-blue-800 dark:bg-blue-200 dark:text-blue-800 group-hover:bg-blue-200 dark:group-hover:bg-blue-300 rounded px-2 py-0.5 p-1 text-md">
-                        <span>{data.kategorilisting}</span>
-                      </span>
-                      <span className="flex h-fit items-center gap-1 font-semibold bg-blue-100 text-blue-800 dark:bg-blue-200 dark:text-blue-800 group-hover:bg-blue-200 dark:group-hover:bg-blue-300 rounded px-2 py-0.5 p-1 text-md">
-                        <span>{data.jenislisting}</span>
-                      </span>
-                      <span className="flex h-fit capitalize items-center gap-1 font-semibold bg-blue-100 text-blue-800 dark:bg-blue-200 dark:text-blue-800 group-hover:bg-blue-200 dark:group-hover:bg-blue-300 rounded px-2 py-0.5 p-1 text-md">
-                        <span>{data.tipelisting}</span>
-                      </span>
+                      <div className="grid grid-cols-3 gap-4">
+                        <span className="flex h-fit items-center justify-center gap-1 font-semibold bg-blue-100 text-blue-800 dark:bg-blue-200 dark:text-blue-800 group-hover:bg-blue-200 dark:group-hover:bg-blue-300 rounded px-1 py-0.5 text-md">
+                          <span>{data.kategorilisting}</span>
+                        </span>
+                        <span className="flex h-fit items-center justify-center gap-1 font-semibold bg-blue-100 text-blue-800 dark:bg-blue-200 dark:text-blue-800 group-hover:bg-blue-200 dark:group-hover:bg-blue-300 rounded px-1 py-0.5 text-md">
+                          <span>{data.jenislisting}</span>
+                        </span>
+                        <span className="flex h-fit capitalize items-center justify-center gap-1 font-semibold bg-blue-100 text-blue-800 dark:bg-blue-200 dark:text-blue-800 group-hover:bg-blue-200 dark:group-hover:bg-blue-300 rounded px-1 py-0.5 text-md">
+                          <span>{data.tipelisting}</span>
+                        </span>
+                      </div>
                     </div>
                     <Card className="lg:w-max h-max">
                       <div className="flex justify-between items-center">
@@ -146,10 +149,10 @@ function DetailListing() {
                         <p className="text-lg">{data?.user_account.email}</p>
                       </div>
                       <hr className="mt-3 mb-2" />
-                      <div className="flex items-center md:justify-end gap-3">
+                      <div className="flex flex-col md:justify-end gap-3">
                         <button
                           type="button"
-                          className="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[0.925rem] flex items-center justify-center gap-3 px-3 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+                          className="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg flex items-center justify-center gap-3 px-3 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800"
                           onClick={() => {
                             window.open(
                               `tel:${data?.user_account.phone_number.replace(
@@ -164,7 +167,7 @@ function DetailListing() {
                         </button>
                         <button
                           type="button"
-                          className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-md flex items-center justify-center gap-3 px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                          className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-lg flex items-center justify-center gap-3 px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                           onClick={() => {
                             openWhatsapp(
                               data?.user_account.phone_number,
@@ -233,6 +236,7 @@ function DetailListing() {
           ))
         )}
       </div>
+      <FooterWebsite />
     </>
   );
 }

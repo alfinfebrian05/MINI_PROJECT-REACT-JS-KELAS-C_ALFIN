@@ -3,12 +3,12 @@ import { Facebook, Instagram, Linkedin, Tiktok } from 'react-bootstrap-icons';
 
 function FooterWebsite() {
   return (
-    <footer className="bg-[#104A80] px-8 pb-10 xl:px-36 xl:pt-4 xl:pb-10 flex flex-wrap lg:grid lg:grid-cols-4 md:gap-6 lg:gap-x-16 text-white">
+    <footer className="bg-[#104A80] px-8 pb-10 xl:px-36 xl:pt-4 xl:pb-10 flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-x-16 md:gap-y-6 lg:gap-x-16 text-white">
       <div>
         <img
-          src="./assets/logo/logo-footer.png"
+          src="../assets/logo/logo-footer.png"
           alt="logo-footer.png"
-          className="w-54"
+          className="w-64 lg:w-54 mt-3 mb-4"
         />
         <p>
           AlfinProperty.com adalah situs teknologi jual beli rumah didirikan
