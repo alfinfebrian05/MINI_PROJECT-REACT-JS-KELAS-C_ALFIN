@@ -44,7 +44,7 @@ function ListingByType() {
   return (
     <>
       <NavbarComponent />
-      <div className="mt-28 md:mt-28 xl:mt-40 px-0 lg:px-18 xl:px-36">
+      <div className="mt-28 md:mt-28 xl:mt-40 lg:mt-32 lg:mb-7 xl:mb-10 px-0 lg:px-18 xl:px-36">
         <div className="grid md:grid-cols-2 md:gap-x-5 lg:grid-cols-3 lg:my-0 xl:grid-cols-4 xl:gap-x-20 xl:px-0 gap-y-5 mt-5 mb-6 px-6">
           {isLoading ? (
             <LoadingData />
