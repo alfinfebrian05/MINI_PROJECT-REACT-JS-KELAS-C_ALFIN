@@ -4,7 +4,7 @@ Hi visitor 👋 this is my mini project for accomplish Studi Independen [ 2023 C
 
 #
 
-🌐 Final Website App Preview : [Visit Project Preview](#)
+🌐 Final Website App Preview : [Visit Project Preview](https://mini-project-react-js-kelas-c-alfin.vercel.app/)
 
 📄 Important Document
 
