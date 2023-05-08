@@ -699,11 +699,7 @@ function AgentDashboard() {
                     <div className="grid md:grid-cols-3 md:gap-4 font-medium mb-2">
                       <div className="relative z-0 w-full group mb-4 xl:mb-0 align-middle">
                         <SelectInput
-                          selectOptions={[
-                            'Pilih Kategori Listing',
-                            'Dijual',
-                            'Disewakan'
-                          ]}
+                          selectOptions={['Dijual', 'Disewakan']}
                           iconInput={Diagram3Fill}
                           labelSelect="Kategori Listing"
                           selectName="kategoriListing"
@@ -731,7 +727,6 @@ function AgentDashboard() {
                         <div className="relative z-0 w-full group mb-4 xl:mb-0 align-middle">
                           <SelectInput
                             selectOptions={[
-                              'Pilih Tipe Listing',
                               'Primary',
                               'Secondary',
                               'Exclusive'
