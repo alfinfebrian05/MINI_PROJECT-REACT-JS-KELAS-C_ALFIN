@@ -805,7 +805,7 @@ function AgentDashboard() {
                             selectName="propertyOwner"
                             iconInput={PeopleFill}
                             selectOnChange={formik.handleChange}
-                            defaultValueSelect={formik.values.propertyOwner}
+                            selectedValue={formik.values.propertyOwner}
                           />
                         </div>
                         <p className="mt-2 text-sm text-red-700 dark:text-red-800">

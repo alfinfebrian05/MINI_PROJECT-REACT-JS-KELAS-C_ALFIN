@@ -8,7 +8,7 @@ function SelectInput({
   selectOptions,
   selectName,
   selectOnChange,
-  defaultValueSelect,
+  selectedValue,
   iconInput
 }) {
   return (
@@ -18,9 +18,10 @@ function SelectInput({
         name={selectName}
         id={selectName}
         onChange={selectOnChange}
-        defaultValue={defaultValueSelect}
         icon={iconInput}
+        value={selectedValue}
       >
+        <SelectOption optionValue="Open to Select" />
         {selectOptions.map((option) => (
           <SelectOption optionValue={option} key={option} />
         ))}
@@ -30,7 +31,7 @@ function SelectInput({
 }
 
 SelectInput.propTypes = {
-  defaultValueSelect: PropTypes.oneOfType([PropTypes.string]),
+  selectedValue: PropTypes.oneOfType([PropTypes.string]),
   labelSelect: PropTypes.string,
   selectOnChange: PropTypes.func,
   selectName: PropTypes.string,
